@@ -68,7 +68,7 @@ export default class Connectors extends React.Component {
   //   ui.start('#firebaseui-auth-container', uiConfig);
   // }
 
-  nativeFB() {
+/*  nativeFB() {
     window.fbAsyncInit = function() {
       FB.init({
         appId            : '435244583535721',
@@ -86,7 +86,7 @@ export default class Connectors extends React.Component {
        js.src = "//connect.facebook.net/en_US/sdk.js";
        fjs.parentNode.insertBefore(js, fjs);
      }(document, 'script', 'facebook-jssdk'));
-  }
+  }*/
 
   facebookLogin() {
     firebase.auth().signInWithPopup(this.state.facebookProvider).then(function(result) {
@@ -102,6 +102,17 @@ export default class Connectors extends React.Component {
       var errorMessage = error.message;
       var email = error.email;
       var credential = error.credential;
+    });
+  }
+
+  twitterLogin() {
+    firebase.auth().signInWithPopup(this.state.twitterProvider).then(function(result) {
+      console.log("twitter login result", result);
+      ls.set('twitterAccess':true);
+      this.setState({'twitterConn':true})
+    }).catch(function(error) {
+      console.log('error', error);
+      //more code
     });
   }
 
@@ -123,6 +134,12 @@ export default class Connectors extends React.Component {
             backgroundColor="#3b5998" 
             onClick={this.facebookLogin.bind(this)}
             disabled={this.state.facebookConn}
+        />
+        <RaisedButton label="Login with Twitter"
+            labelColor="#FFF" 
+            backgroundColor="#3b5998" 
+            onClick={this.twitterLogin.bind(this)}
+            disabled={this.state.twitterConn}
         />
       </div>
     );
